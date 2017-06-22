@@ -1,0 +1,68 @@
+<template>
+  <div>
+    <el-dialog :visible.sync="dialogVisible" title="游客">
+
+      <el-form :inline="true" class="box-inline" v-for="(item, index) in tourists" :key="index">
+        <h5>游客{{ index + 1 }}</h5>
+        <el-form-item label="姓名">
+          {{ item.TravellerName }}
+        </el-form-item>
+        <el-form-item label="手机">
+          {{ item.TravellerMobile }}
+        </el-form-item>
+        <el-form-item label="证件类型">
+          {{ item.CardType | cardType }}
+        </el-form-item>
+        <el-form-item label="证件号">
+          {{ item.CardID}}
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
+  </div>
+
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        tourists: [],
+        dialogVisible: false,
+        orderId: 0
+      }
+    },
+    created () {
+      this.$bus.$on('showTouristDialog', data => {
+        this.orderId = data.orderId
+        this.getTouristList()
+      })
+    },
+    methods: {
+      getTouristList () {
+        this.tourists = []
+        this.dialogVisible = true
+        this.axios.post('/otauser', {
+          action: 'GetOrderUserList',
+          orderId: this.orderId + ''
+        })
+          .then((response) => {
+            let data = response.data
+            this.tourists = data.users.lists
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
+    }
+  }
+</script>
+
+<style lang="css" scoped>
+  .loading-wrap {
+    min-height: 200px;
+  }
+</style>
