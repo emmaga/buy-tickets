@@ -1,6 +1,6 @@
 <template>
   <!--弹出-->
-  <el-dialog :visible.sync="dialogFormVisible">
+  <el-dialog :visible.sync="dialogFormVisible" title="下单">
     <el-form ref="form" :rules="rules" :model="form" label-width="120px">
       <div class="row">
         <div class="col-xs-12">

@@ -21,15 +21,21 @@
       </div>
       <div class="panel-body">
         <!--登录表单-->
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-          <el-form-item label="用户名" prop="account">
-            <el-input v-model="ruleForm.account" name="account" auto-complete="on"></el-input>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
+          <el-form-item prop="account">
+            <el-input v-model="ruleForm.account" name="account" auto-complete="on" placeholder="用户名">
+              <i class="glyphicon glyphicon-user" slot="prepend"></i>
+            </el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="ruleForm.password" name="password"></el-input>
+          <el-form-item prop="password">
+            <el-input type="password" v-model="ruleForm.password" name="password" placeholder="密码">
+              <i class="glyphicon glyphicon-lock" slot="prepend"></i>
+            </el-input>
           </el-form-item>
-          <el-form-item label="分销商code" prop="OTACode">
-            <el-input v-model="ruleForm.OTACode" name="OTACode" auto-complete="on"></el-input>
+          <el-form-item prop="OTACode">
+            <el-input v-model="ruleForm.OTACode" name="OTACode" auto-complete="on"  placeholder="分销商code">
+              <i class="glyphicon glyphicon-briefcase" slot="prepend"></i>
+            </el-input>
           </el-form-item>
           <div class="control-group btn-wrap">
             <button :disabled="logining" @click.stop.prevent="submitForm('ruleForm')" class="btn btn-primary btn-block">
@@ -106,6 +112,7 @@
     margin-left: -160px;
     margin-top: -180px;
   }
+
   .btn-wrap {
     padding-top: 10px;
   }

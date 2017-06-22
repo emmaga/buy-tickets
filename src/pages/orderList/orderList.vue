@@ -12,18 +12,22 @@
 
       <div class="col-20">
         <label>检票状态</label>
-        <el-select v-model="checkStatus" placeholder="请选择">
-          <el-option v-for="item in selectOption1" :key="item.value" :label="item.label"
-                     :value="item.value"></el-option>
-        </el-select>
+        <select v-model="checkStatus" class="form-control">
+          <option value="all">全部检票状态</option>
+          <option value="checked">已检票</option>
+          <option value="checking">检票中</option>
+          <option value="waiting">待检票</option>
+          <option value="refund">已退票</option>
+        </select>
       </div>
 
       <div class="col-20">
         <label>过期状态</label>
-        <el-select v-model="isExpired" placeholder="请选择">
-          <el-option v-for="item in selectOption2" :key="item.value" :label="item.label"
-                     :value="item.value"></el-option>
-        </el-select>
+        <select v-model="isExpired" class="form-control">
+          <option value="all">已过期及未过期</option>
+          <option value="yes">已过期</option>
+          <option value="no">未过期</option>
+        </select>
       </div>
 
       <div class="col-20">
@@ -76,10 +80,19 @@
       </div>
 
       <div class="col-12">
-        <el-select v-model="bookerIDType" placeholder="请选择">
-          <el-option v-for="item in selectOption" :key="item.value" :label="item.label"
-                     :value="item.value"></el-option>
-        </el-select>
+        <select class="flex-item form-control" v-model="bookerIDType">
+          <option value="ID_CARD">身份证</option>
+          <option value="ERTONG">儿童无证件</option>
+          <option value="GANGAO">港澳通行证</option>
+          <option value="HUZHAO">护照</option>
+          <option value="SHIBING">士兵证</option>
+          <option value="JUNGUAN">军官证</option>
+          <option value="HUKOUBO">户口薄</option>
+          <option value="CHUSHENGZHENGMING">出生证明</option>
+          <option value="TAIBAO">台湾通行证</option>
+          <option value="TAIBAOZHENG">台胞证</option>
+          <option value="OTHER">其他</option>
+        </select>
       </div>
 
       <div class="col-12">
