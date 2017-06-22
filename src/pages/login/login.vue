@@ -97,22 +97,16 @@
     }
   }
 </script>
-<style lang="less">
-  .login-wrap {
-    .el-form-item__label {
-      padding-bottom: 5px;
-      padding-top: 5px;
-    }
-    .panel {
-      width: 320px;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      margin-left: -160px;
-      margin-top: -180px;
-    }
-    .btn-wrap {
-      padding-top: 10px;
-    }
+<style lang="less" scoped>
+  .panel {
+    width: 320px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -160px;
+    margin-top: -180px;
+  }
+  .btn-wrap {
+    padding-top: 10px;
   }
 </style>

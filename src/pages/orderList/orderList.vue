@@ -29,7 +29,7 @@
       <div class="col-20">
         <label>成交时间范围</label>
         <el-date-picker v-model="orderDateRange" type="daterange" align="right" placeholder="选择日期范围"
-                        :picker-options="pickerOptions" @change="show">
+                        :picker-options="pickerOptions" @change="clearDate">
         </el-date-picker>
       </div>
 
@@ -88,10 +88,10 @@
     </div>
 
     <div class="search-btn-wrap">
-      <el-button type="primary" icon="search" @click="search(searchData)">搜索</el-button>
+      <el-button type="primary" icon="search" @click="formSearch">搜索</el-button>
     </div>
 
-    <div v-loading="loading" class="table-wrap">
+    <div v-loading="loading" class="table-wrap" ref="ttt">
       <div class="inner">
         <orderTable :tableData="searchResult.lists"></orderTable>
       </div>
@@ -224,7 +224,13 @@
       showTouristDialog (data) {
         this.tourist = data
       },
-      show (val) {
+      formSearch () {
+        this.currentPage = 1
+        this.search(this.searchData)
+        // let ele = this.$refs.ttt
+        // this.$scrollTo(ele)
+      },
+      clearDate (val) {
         if (val === undefined) {  // date清空后bug fix
           this.orderDateRange = [null, null]
         }
@@ -303,99 +309,5 @@
 </script>
 
 <style lang="less">
-  .order-list {
-    .el-select {
-      width: 100%;
-      .el-input {
-        width: 100%;
-      }
-    }
-    .el-date-editor--daterange.el-input {
-      width: 100%;
-    }
-    .search-btn-wrap {
-      text-align: right;
-      padding-right: 10px;
-    }
-    .table-wrap {
-      padding: 20px 10px 10px;
-    }
-    .table-expand .el-form-item {
-      margin-right: 0;
-      margin-bottom: 0;
-      width: 50%;
-    }
 
-    .box-inline {
-      font-size: 0;
-      border-top: 1px solid #eee;
-    }
-
-    .box-inline label {
-      width: 120px;
-      color: #99a9bf;
-      font-weight: normal;
-    }
-
-    .box-inline .el-form-item {
-      margin-right: 0;
-      margin-bottom: 0;
-      width: 50%;
-    }
-  }
-
-  .form-box {
-    padding-bottom: 10px;
-  }
-
-  .form-box-5 {
-    font-size: 0;
-    .col-20 {
-      display: inline-block;
-      box-sizing: border-box;
-      width: 20%;
-      font-size: 14px;
-      padding: 0 10px;
-    }
-  }
-
-  .form-box-8 {
-    font-size: 0;
-    margin: 0 3px 0 10px;
-    .col-12 {
-      display: inline-block;
-      box-sizing: border-box;
-      width: 12.5%;
-      font-size: 14px;
-      margin-left: -1px;
-    }
-    .col-12:first-child {
-      .el-input__inner {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-      }
-    }
-    .col-12:last-child {
-      .el-input__inner {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-      }
-    }
-    .el-input {
-      float: left;
-    }
-    .el-input__inner {
-      border-radius: 0;
-      position: relative;
-      &:focus {
-        z-index: 3;
-        top: 0;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-      }
-    }
-    .el-select .el-input .el-input__icon {
-      z-index: 5;
-    }
-
-  }
 </style>

@@ -41,11 +41,7 @@
         this.cancelCount = 1
       },
       refund () {
-        this.$confirm('确定退票吗?', '退票', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: ''
-        }).then(() => {
+        this.$confirm('确定退票吗?').then(() => {
           this.refunding = true
           this.axios.post('/otauser', {
             action: 'OTACancelOrder',

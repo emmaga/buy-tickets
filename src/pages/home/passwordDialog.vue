@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog :visible.sync="dialogVisible" title="修改密码">
-      <el-form :model="passwordForm" :rules="rules" ref="passwordForm" label-width="100px">
-        <el-form-item label="原密码" prop="oldPassword">
+    <el-dialog :visible.sync="dialogVisible" title="修改密码" size="tiny">
+      <el-form :model="passwordForm" :rules="rules" ref="passwordForm" label-width="95px" label-position="left">
+        <el-form-item label="原始密码" prop="oldPassword">
           <el-input type="password" v-model="passwordForm.oldPassword" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
@@ -14,7 +14,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="resetForm('passwordForm')">重置</el-button>
-        <el-button type="primary" @click="submitForm('passwordForm')" :disabled="changing">提交</el-button>
+        <el-button @click="submitForm('passwordForm')" :disabled="changing" type="primary">提交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -107,8 +107,14 @@
   }
 </script>
 
-<style lang="css" scoped>
+<style lang="less" scoped>
   .btn-wrap {
     text-align: right;
+  }
+
+  .dialog-footer {
+    button {
+      margin-left: 10px;
+    }
   }
 </style>

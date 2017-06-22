@@ -18,6 +18,7 @@
         </div>
       </div>
     </div>
+
     <!--商品列表-->
     <el-table :data="productList" style="width: 100%" stripe>
       <el-table-column prop="GoodsName" label="商品名"></el-table-column>
@@ -30,7 +31,7 @@
       <el-table-column prop="TwoDBarCodeOn" label="启用二维码" width="120"></el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button @click="initOrder(scope.row)" type="primary" size="small">下单</el-button>
+          <button @click="initOrder(scope.row)" class="btn btn-sm btn-primary">下单</button>
         </template>
       </el-table-column>
     </el-table>

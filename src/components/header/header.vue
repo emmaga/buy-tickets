@@ -40,19 +40,18 @@
     methods: {
       ...mapMutations(['getUserName']),
       exit () {
-        this.$confirm('确定退出吗?', '退出登录', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: ''
-        }).then(() => {
-          clearLocal('clearToken')
-          this.$store.commit('delUserName')
-          this.$router.push('/login')
-          this.$message({
-            type: 'success',
-            message: '退出成功!'
+        this.$confirm('确定退出吗?')
+          .then(() => {
+            clearLocal('clearToken')
+            this.$store.commit('delUserName')
+            this.$router.push('/login')
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            })
           })
-        })
+          .catch(() => {
+          })
       },
       changePW () {
         this.$bus.$emit('showPasswordDialog')
