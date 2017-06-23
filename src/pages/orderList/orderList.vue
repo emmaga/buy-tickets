@@ -179,8 +179,6 @@
         },
         totalCount: null,
         loading: true,
-        getData: [],
-        pageNum: 0,
         searching: false
       }
     },
@@ -189,7 +187,6 @@
     },
     created () {
       this.search(this.searchData).then(() => {
-        this.pageNum = Math.ceil(this.searchResult.totalCount / this.pageSize)
         this.loading = false
       })
       this.$bus.$off('refund')
