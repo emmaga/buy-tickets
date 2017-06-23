@@ -12,8 +12,8 @@ import VueBus from 'vue-bus'
 import filters from '@/common/js/filters/index'
 import VueScrollTo from 'vue-scrollto'
 import vuescroll from 'vue-scroll'
-import Mock from './mock'
-Mock.bootstrap()
+// import Mock from './mock'
+// Mock.bootstrap()
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
