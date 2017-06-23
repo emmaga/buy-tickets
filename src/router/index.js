@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/pages/login/login'
 import home from '@/pages/home/home'
+import NotFound from '@/pages/404.vue'
 import orderList from '@/pages/orderList/orderList'
 import ticketList from '@/pages/ticketList/ticketList'
 import {getLocal} from '@/common/js/store'
@@ -11,31 +12,64 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: login
+    component: login,
+    hidden: true
   },
   {
     path: '/login',
-    redirect: '/'
+    redirect: '/',
+    hidden: true
   },
   {
-    path: '/Home',
-    name: 'home',
+    path: '/home',
+    name: '订单中心',
     component: home,
+    iconCls: 'glyphicon glyphicon-barcode',
     meta: {
       requireAuth: true  // 添加该字段，表示进入这个路由是需要登录的
     },
     children: [
       {
         path: 'ticketList',
-        name: 'ticketList',
+        name: '手动下单',
+        iconCls: '',
         component: ticketList
       },
       {
         path: 'orderList',
-        name: 'orderList',
+        name: '订单查询',
+        iconCls: '',
         component: orderList
       }
     ]
+  },
+  {
+    path: '/home',
+    name: '管理员工具',
+    component: home,
+    iconCls: 'glyphicon glyphicon-wrench',
+    meta: {
+      requireAuth: true  // 添加该字段，表示进入这个路由是需要登录的
+    },
+    children: [
+      {
+        path: 'userList',
+        name: '用户管理',
+        iconCls: '',
+        component: ticketList
+      }
+    ]
+  },
+  {
+    path: '*',
+    hidden: true,
+    redirect: {path: '/404'}
+  },
+  {
+    path: '/404',
+    component: NotFound,
+    name: '',
+    hidden: true
   }
 ]
 

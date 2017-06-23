@@ -1,14 +1,5 @@
 <template>
   <div>
-    <!--当前位置-->
-    <div class="sub-nav">
-      <a><i class="glyphicon glyphicon-barcode"></i>
-        订单中心
-        <i class="glyphicon glyphicon-chevron-right"></i>
-        订单列表</a>
-    </div>
-    <hr>
-
     <!--账户余额-->
     <div class="row">
       <div class="col-xs-4">
@@ -47,7 +38,7 @@
 </template>
 
 <script>
-  import orderDialog from './orderDialog.vue'
+  import orderDialog from '../../components/dialog/orderDialog.vue'
   import {mapState, mapActions} from 'vuex'
 
   export default {

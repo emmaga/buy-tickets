@@ -7,6 +7,31 @@ body, html {
   height: 100%;
 }
 
+.navbar {
+  margin-bottom: 0;
+}
+
+.col-left {
+  width: 160px !important;
+  background: #fff;
+  border-right: 1px solid #eee;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  bottom: 0;
+  padding: 0;
+}
+
+.col-right {
+  position: absolute;
+  overflow: auto;
+  top: 50px;
+  left: 160px;
+  bottom: 0;
+  right: 0;
+  padding: 0 15px;
+}
+
 //分页
 .u-page {
   padding: 10px 0 50px;
@@ -15,12 +40,26 @@ body, html {
 
 //子导航
 .sub-nav {
-  font-weight: bold
+  font-weight: bold;
+  height: 56px;
+  line-height: 55px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
 }
 
 .login-wrap .el-form-item__error {
   margin-left: 36px;
   margin-top: 1px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .2s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 
 @import "sub/eleFix";

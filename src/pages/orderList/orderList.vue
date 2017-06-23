@@ -1,13 +1,6 @@
 <template>
   <div class="order-list">
-    <!--当前位置-->
-    <div class="sub-nav">
-      <a><i class="glyphicon glyphicon-barcode"></i>
-        订单中心
-        <i class="glyphicon glyphicon-chevron-right"></i>
-        订单列表</a>
-    </div>
-    <hr>
+
     <div class="form-box form-box-5">
 
       <div class="col-20">
@@ -101,7 +94,7 @@
     </div>
 
     <div class="search-btn-wrap">
-      <el-button type="primary" icon="search" @click="formSearch">搜索</el-button>
+      <el-button type="primary" icon="search" @click="formSearch" :loading="searching">搜索</el-button>
     </div>
 
     <div v-loading="loading" class="table-wrap" ref="ttt">
@@ -127,12 +120,12 @@
 <script>
   import moment from 'moment'
   import orderTable from './orderTable.vue'
-  import touristDialog from './touristDialog.vue'
-  import refundDialog from './refundDialog.vue'
+  import touristDialog from '../../components/dialog/touristDialog.vue'
+  import refundDialog from '../../components/dialog/refundDialog.vue'
   import {mapActions, mapState} from 'vuex'
 
-  let initStartTime = new Date(moment(new Date()).format('YYYY-MM-DD') + ' 00:00:00')
-  let initEndTime = new Date(initStartTime.getTime() + 30 * 24 * 60 * 60 * 1000)
+  let initStartTime = moment(new Date()).format('YYYY-MM-DD')
+  let initEndTime = moment(new Date()).add(30, 'days').format('YYYY-MM-DD')
   export default {
     data () {
       return {
@@ -176,16 +169,13 @@
             }
           }]
         },
-        selectOption1: options1,
-        selectOption2: options2,
-        selectOption: options,
         totalCount: null,
         currentPage: 1,
         pageSize: 10,
         loading: true,
         getData: [],
         pageNum: 0,
-        tourist: {}
+        searching: false
       }
     },
     computed: {
@@ -234,14 +224,14 @@
           this.loading = false
         })
       },
-      showTouristDialog (data) {
-        this.tourist = data
-      },
       formSearch () {
         this.currentPage = 1
-        this.search(this.searchData)
-        // let ele = this.$refs.ttt
-        // this.$scrollTo(ele)
+        this.searching = true
+        this.search(this.searchData).then(() => {
+          this.searching = false
+          let ele = this.$refs.ttt
+          this.$scrollTo(ele)
+        })
       },
       clearDate (val) {
         if (val === undefined) {  // date清空后bug fix
@@ -249,7 +239,7 @@
         }
       },
       formateTime (val) {
-        return val ? val.getTime() : ''
+        return val ? new Date(val).getTime() : ''
       }
     },
     components: {
@@ -258,67 +248,6 @@
       refundDialog
     }
   }
-
-  let options = [{
-    value: 'ID_CARD',
-    label: '身份证'
-  }, {
-    value: 'ERTONG',
-    label: '儿童无证件'
-  }, {
-    value: 'GANGAO',
-    label: '港澳通行证'
-  }, {
-    value: 'HUZHAO',
-    label: '护照'
-  }, {
-    value: 'SHIBING',
-    label: '士兵证'
-  }, {
-    value: 'JUNGUAN',
-    label: '军官证'
-  }, {
-    value: 'HUKOUBO',
-    label: '户口薄'
-  }, {
-    value: 'CHUSHENGZHENGMING',
-    label: '出生证明'
-  }, {
-    value: 'TAIBAO',
-    label: '台湾通行证'
-  }, {
-    value: 'TAIBAOZHENG',
-    label: '台胞证'
-  }, {
-    value: 'OTHER',
-    label: '其他'
-  }]
-  let options1 = [{
-    value: 'all',
-    label: '全部检票状态'
-  }, {
-    value: 'checked',
-    label: '已检票'
-  }, {
-    value: 'checking',
-    label: '检票中'
-  }, {
-    value: 'waiting',
-    label: '待检票'
-  }, {
-    value: 'refund',
-    label: '已退票'
-  }]
-  let options2 = [{
-    value: 'all',
-    label: '已过期及未过期'
-  }, {
-    value: 'yes',
-    label: '已过期'
-  }, {
-    value: 'no',
-    label: '未过期'
-  }]
 </script>
 
 <style lang="less">

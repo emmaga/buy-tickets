@@ -10,13 +10,26 @@ import http from '@/http'
 import store from '@/store'
 import VueBus from 'vue-bus'
 import filters from '@/common/js/filters/index'
-// import VueScrollTo from 'vue-scrollto'
+import VueScrollTo from 'vue-scrollto'
 import vuescroll from 'vue-scroll'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueBus)
-// Vue.use(VueScrollTo)
+
+window.requestAnimationFrame = (function () {
+  return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 6000 / 60)
+    }
+})()
+
+Vue.use(VueScrollTo, {
+  container: '.col-right'
+})
+
 Vue.use(vuescroll)
 
 /* eslint-disable no-new */
