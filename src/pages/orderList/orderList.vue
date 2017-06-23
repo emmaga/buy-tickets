@@ -1,11 +1,9 @@
 <template>
   <div class="order-list">
-
     <div class="form-box form-box-5">
-
       <div class="col-20">
         <label>检票状态</label>
-        <select v-model="checkStatus" class="form-control">
+        <select v-model="searchData.checkStatus" class="form-control">
           <option value="all">全部检票状态</option>
           <option value="checked">已检票</option>
           <option value="checking">检票中</option>
@@ -16,7 +14,7 @@
 
       <div class="col-20">
         <label>过期状态</label>
-        <select v-model="isExpired" class="form-control">
+        <select v-model="searchData.isExpired" class="form-control">
           <option value="all">已过期及未过期</option>
           <option value="yes">已过期</option>
           <option value="no">未过期</option>
@@ -26,21 +24,21 @@
       <div class="col-20">
         <label>成交时间范围</label>
         <el-date-picker v-model="orderDateRange" type="daterange" align="right" placeholder="选择日期范围"
-                        :picker-options="pickerOptions" @change="clearDate">
+                        :picker-options="pickerOptions" @change="changeOrderDate">
         </el-date-picker>
       </div>
 
       <div class="col-20">
         <label>游玩时间范围</label>
         <el-date-picker v-model="visitDateRange" type="daterange" align="right" placeholder="选择日期范围"
-                        :picker-options="pickerOptions">
+                        :picker-options="pickerOptions" @change="changeVisitDate">
         </el-date-picker>
       </div>
 
       <div class="col-20">
         <label>检票时间范围</label>
         <el-date-picker v-model="checkDateRange" type="daterange" align="right" placeholder="选择日期范围"
-                        :picker-options="pickerOptions">
+                        :picker-options="pickerOptions" @change="changeCheckDate">
         </el-date-picker>
       </div>
 
@@ -49,31 +47,31 @@
     <div class="form-box form-box-8">
 
       <div class="col-12">
-        <el-input v-model="bookPerson" placeholder="预订人姓名"></el-input>
+        <el-input v-model="searchData.bookPerson" placeholder="预订人姓名"></el-input>
       </div>
 
       <div class="col-12">
-        <el-input v-model="bookMobile" placeholder="预订人手机号"></el-input>
+        <el-input v-model="searchData.bookMobile" placeholder="预订人手机号"></el-input>
       </div>
 
       <div class="col-12">
-        <el-input v-model="orderTicketCode" placeholder="辅助码"></el-input>
+        <el-input v-model="searchData.orderTicketCode" placeholder="辅助码"></el-input>
       </div>
 
       <div class="col-12">
-        <el-input v-model="parterOrderId" placeholder="分销商订单号"></el-input>
+        <el-input v-model="searchData.parterOrderId" placeholder="分销商订单号"></el-input>
       </div>
 
       <div class="col-12">
-        <el-input v-model="orderId" placeholder="景区订单号"></el-input>
+        <el-input v-model="searchData.orderId" placeholder="景区订单号"></el-input>
       </div>
 
       <div class="col-12">
-        <el-input v-model="goodsName" placeholder="商品名"></el-input>
+        <el-input v-model="searchData.goodsName" placeholder="商品名"></el-input>
       </div>
 
       <div class="col-12">
-        <select class="flex-item form-control" v-model="bookerIDType">
+        <select class="flex-item form-control" v-model="searchData.bookerIDType">
           <option value="ID_CARD">身份证</option>
           <option value="ERTONG">儿童无证件</option>
           <option value="GANGAO">港澳通行证</option>
@@ -89,7 +87,7 @@
       </div>
 
       <div class="col-12">
-        <el-input v-model="bookerID" placeholder="证件号"></el-input>
+        <el-input v-model="searchData.bookerID" placeholder="证件号"></el-input>
       </div>
     </div>
 
@@ -97,15 +95,15 @@
       <el-button type="primary" icon="search" @click="formSearch" :loading="searching">搜索</el-button>
     </div>
 
-    <div v-loading="loading" class="table-wrap" ref="ttt">
+    <div v-loading="loading" class="table-wrap" ref="searchTable">
       <div class="inner">
         <orderTable :tableData="searchResult.lists"></orderTable>
       </div>
     </div>
 
     <div class="u-page">
-      <el-pagination layout="total, prev, pager, next" :pageSize="pageSize" :total="searchResult.totalCount"
-                     @current-change="handleCurrentChange" :current-page="currentPage">
+      <el-pagination layout="total, prev, pager, next" :pageSize="searchData.pageSize" :total="searchResult.totalCount"
+                     @current-change="handleCurrentChange" :current-page="searchData.currentPage">
       </el-pagination>
     </div>
 
@@ -124,21 +122,31 @@
   import refundDialog from '../../components/dialog/refundDialog.vue'
   import {mapActions, mapState} from 'vuex'
 
-  let initStartTime = moment(new Date()).format('YYYY-MM-DD')
-  let initEndTime = moment(new Date()).add(30, 'days').format('YYYY-MM-DD')
+  let initStartTime = new Date(moment(new Date()).format('YYYY-MM-DD')).getTime()
+  let initEndTime = initStartTime + 30 * 24 * 60 * 60 * 1000
   export default {
     data () {
       return {
-        checkStatus: 'all',
-        isExpired: 'all',
-        bookMobile: '',
-        bookPerson: '',
-        orderTicketCode: '',
-        parterOrderId: '',
-        orderId: '',
-        goodsName: '',
-        bookerIDType: 'ID_CARD',
-        bookerID: '',
+        searchData: {
+          pageSize: 10,
+          currentPage: 1,
+          checkStatus: 'all',
+          isExpired: 'all',
+          orderCreateDateStart: initStartTime,
+          orderCreateDateEnd: initEndTime,
+          visitDateStart: '',
+          visitDateEnd: '',
+          checkDateStart: '',
+          checkDateEnd: '',
+          bookMobile: '',
+          bookPerson: '',
+          orderTicketCode: '',
+          parterOrderId: '',
+          orderId: '',
+          goodsName: '',
+          bookerIDType: 'ID_CARD',
+          bookerID: ''
+        },
         orderDateRange: [initStartTime, initEndTime],
         visitDateRange: [null, null],
         checkDateRange: [null, null],
@@ -170,8 +178,6 @@
           }]
         },
         totalCount: null,
-        currentPage: 1,
-        pageSize: 10,
         loading: true,
         getData: [],
         pageNum: 0,
@@ -179,29 +185,7 @@
       }
     },
     computed: {
-      ...mapState(['searchResult']),
-      searchData: function () {
-        return {
-          pageSize: this.pageSize,
-          currentPage: this.currentPage,
-          checkStatus: this.checkStatus,
-          isExpired: this.isExpired,
-          orderCreateDateStart: this.formateTime(this.orderDateRange[0]),
-          orderCreateDateEnd: this.formateTime(this.orderDateRange[1]),
-          visitDateStart: this.formateTime(this.visitDateRange[0]),
-          visitDateEnd: this.formateTime(this.visitDateRange[1]),
-          checkDateStart: this.formateTime(this.checkDateRange[0]),
-          checkDateEnd: this.formateTime(this.checkDateRange[1]),
-          bookMobile: this.bookMobile,
-          bookPerson: this.bookPerson,
-          orderTicketCode: this.orderTicketCode,
-          parterOrderId: this.parterOrderId,
-          orderId: this.orderId,
-          goodsName: this.goodsName,
-          bookerIDType: this.bookerIDType,
-          bookerID: this.bookerID
-        }
-      }
+      ...mapState(['searchResult'])
     },
     created () {
       this.search(this.searchData).then(() => {
@@ -218,25 +202,41 @@
     methods: {
       ...mapActions(['search']),
       handleCurrentChange (val) {
-        this.currentPage = val
+        this.searchData.currentPage = val
         this.loading = true
         this.search(this.searchData).then(() => {
           this.loading = false
         })
       },
       formSearch () {
-        this.currentPage = 1
+        this.searchData.currentPage = 1
         this.searching = true
         this.search(this.searchData).then(() => {
           this.searching = false
-          let ele = this.$refs.ttt
+          let ele = this.$refs.searchTable
           this.$scrollTo(ele)
         })
       },
-      clearDate (val) {
+      changeOrderDate (val) {
         if (val === undefined) {  // date清空后bug fix
           this.orderDateRange = [null, null]
         }
+        this.searchData.orderCreateDateStart = this.formateTime(this.orderDateRange[0])
+        this.searchData.orderCreateDateEnd = this.formateTime(this.orderDateRange[1])
+      },
+      changeVisitDate (val) {
+        if (val === undefined) {  // date清空后bug fix
+          this.visitDateRange = [null, null]
+        }
+        this.searchData.visitDateStart = this.formateTime(this.visitDateRange[0])
+        this.searchData.visitDateEnd = this.formateTime(this.visitDateRange[1])
+      },
+      changeCheckDate (val) {
+        if (val === undefined) {  // date清空后bug fix
+          this.checkDateRange = [null, null]
+        }
+        this.searchData.checkDateStart = this.formateTime(this.checkDateRange[0])
+        this.searchData.checkDateEnd = this.formateTime(this.checkDateRange[1])
       },
       formateTime (val) {
         return val ? new Date(val).getTime() : ''
