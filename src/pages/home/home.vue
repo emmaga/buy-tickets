@@ -49,7 +49,7 @@
 <script>
   import {clearLocal} from '@/common/js/store'
   import {mapMutations, mapState} from 'vuex'
-  import passwordDialog from './passwordDialog'
+  import passwordDialog from '../../components/dialog/passwordDialog'
   export default {
     data () {
       return {
