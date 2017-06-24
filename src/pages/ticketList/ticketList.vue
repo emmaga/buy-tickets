@@ -16,10 +16,14 @@
       <el-table-column prop="SalePrice" label="单价"></el-table-column>
       <el-table-column prop="VisitDateStart" label="游玩开始时间" width="180"></el-table-column>
       <el-table-column prop="VisitDateEnd" label="游玩结束时间" width="180"></el-table-column>
-      <el-table-column prop="GoodsName" label="分销商码"></el-table-column>
+      <el-table-column prop="OTACode" label="分销商码"></el-table-column>
       <el-table-column prop="GoodsID" label="商品码"></el-table-column>
       <el-table-column prop="SaleID" label="销售码"></el-table-column>
-      <el-table-column prop="TwoDBarCodeOn" label="启用二维码" width="120"></el-table-column>
+      <el-table-column label="启用二维码" width="120">
+        <template scope="scope">
+          {{scope.row.TwoDBarCodeOn | isNot}}
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
           <button @click="initOrder(scope.row)" class="btn btn-sm btn-primary">下单</button>
