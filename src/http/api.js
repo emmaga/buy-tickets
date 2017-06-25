@@ -1,0 +1,61 @@
+/**
+ * Created by Administrator on 2017/6/25 0025.
+ */
+import axios from 'axios'
+import {setLocal, getLocal} from '@/common/js/store'
+
+// 登录
+export const login = params => {
+  params = Object.assign({action: 'GetToken', projectName: 'xitangdev'}, params)
+  return axios.post('/loginOTA', params).then(res => {
+    if (!(res.data.rescode === 401 || res.data.rescode !== 200)) {
+      let data = res.data
+      setLocal('userName', data.userName)
+      setLocal('clearToken', data.token)
+      setLocal('OTACode', data.OTACode)
+      setLocal('account', data.account)
+      setLocal('projectName', data.projectName)
+    }
+  })
+}
+
+// 获取账户信息
+export const getAccountInfo = params => {
+  params = {
+    action: 'GetOTADetail',
+    data: {
+      OTACode: getLocal('OTACode')
+    }
+  }
+  return axios.post('/partners', params).then(res => res.data)
+}
+
+// 获取可售商品
+export const getProductList = params => {
+  params = {
+    action: 'GetOTAProducts'
+  }
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 下单
+export const placeOrder = data => {
+  let params = {
+    action: 'OTANewOrder',
+    data: data
+  }
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 搜索
+export const searchOrder = (data, size, cur) => {
+  let params = {
+    action: 'GetOTAOrderListByPage',
+    sortBy: 'OrderCreateTime', // 成交时间
+    orderBy: 'desc', // asc 升序，desc 降序
+    count: size, // 一页显示数量
+    page: cur, // 当前页
+    search: data
+  }
+  return axios.post('/otauser', params).then(res => res.data)
+}

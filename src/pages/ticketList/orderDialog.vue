@@ -13,7 +13,7 @@
       <hr>
       <el-form-item label="游玩日期">
         <el-date-picker v-model="form.date" type="date" placeholder="选择日期"
-                        :picker-options="form.pickerOptions0" :clearable="false"></el-date-picker>
+                        :picker-options="form.pickerOptions" :clearable="false"></el-date-picker>
       </el-form-item>
 
       <el-form-item label="购票数量">
@@ -68,7 +68,7 @@
 
     <div slot="footer" class="dialog-footer">
       <button @click="dialogFormVisible = false" class="btn btn-default btn-sm">取 消</button>
-      <button :disabled="saving" @click.stop.prevent="submitForm('form')" class="btn btn-primary btn-sm">下单</button>
+      <button :disabled="disabled" @click.stop.prevent="submitForm('form')" class="btn btn-primary btn-sm">下单</button>
     </div>
 
   </el-dialog>
@@ -76,6 +76,7 @@
 
 <script>
   import moment from 'moment'
+  import {placeOrder} from '../../http/api'
   import {mapActions} from 'vuex'
 
   let options = [{
@@ -137,7 +138,7 @@
       }
       return {
         dialogFormVisible: false,
-        saving: false,
+        disabled: false,
         form: {
           date: new Date(),
           ticketCount: '1',
@@ -147,7 +148,7 @@
           travelerList: [],
           contactsIdType: 'ID_CARD',
           selectOption: options,
-          pickerOptions0: {
+          pickerOptions: {
             disabledDate (time) {
               return time.getTime() < Date.now() - 8.64e7
             }
@@ -169,8 +170,19 @@
       }
     },
     computed: {
-      visitTime: function () {
-        return moment(this.form.date).format('YYYYMMDD') + '000000'
+      placeData: function () {
+        return {
+          SaleID: this.tInfo.SaleID,
+          VisitTime: moment(this.form.date).format('YYYYMMDD') + '000000',
+          TicketCount: this.form.ticketCount + '',
+          contacts: {
+            idNum: this.form.contactsIdNum,
+            idType: this.form.contactsIdType,
+            mobile: this.form.contactsMobile,
+            name: this.form.contactsName
+          },
+          TravelerList: this.form.travelerList
+        }
       }
     },
     methods: {
@@ -213,25 +225,10 @@
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.saving = true
-            this.axios.post('/otauser', {
-              action: 'OTANewOrder',
-              data: {
-                SaleID: this.tInfo.SaleID,
-                VisitTime: this.visitTime,
-                TicketCount: this.form.ticketCount + '',
-                contacts: {
-                  idNum: this.form.contactsIdNum,
-                  idType: this.form.contactsIdType,
-                  mobile: this.form.contactsMobile,
-                  name: this.form.contactsName
-                },
-                TravelerList: this.form.travelerList
-              }
-            })
-              .then((response) => {
-                let data = response.data
-                this.saving = false
+            this.disabled = true
+            placeOrder(this.placeData)
+              .then((data) => {
+                this.disabled = false
                 if (data.rescode === 200) {
                   this.getAccount().then(() => {
                     this.$message({
@@ -245,7 +242,7 @@
               })
               .catch((error) => {
                 console.log(error)
-                this.saving = false
+                this.disabled = false
               })
           } else {
             console.log('error submit!!')

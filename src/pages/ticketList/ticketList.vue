@@ -43,6 +43,7 @@
 
 <script>
   import orderDialog from './orderDialog.vue'
+  import {getProductList} from '@/http/api'
   import {mapState, mapActions} from 'vuex'
 
   export default {
@@ -54,15 +55,17 @@
         newData: [],
         pageNum: 0,
         tInfo: {},
-        ajaxNum: 0
+        productList: []
       }
     },
     computed: {
-      ...mapState(['prePayment', 'paymentAmount', 'productList'])
+      ...mapState(['prePayment', 'paymentAmount'])
     },
     created () {
       this.getAccount()
-      this.getProduct()
+      getProductList().then((obj) => {
+        this.productList = obj.ProductList
+      })
 //      分页处理
 //      .then(() => {
 //        this.handleCurrentChange(1)

@@ -102,8 +102,8 @@
     </div>
 
     <div class="u-page">
-      <el-pagination layout="total, prev, pager, next" :pageSize="searchData.pageSize" :total="searchResult.totalCount"
-                     @current-change="handleCurrentChange" :current-page="searchData.currentPage">
+      <el-pagination layout="total, prev, pager, next" :pageSize="pageSize" :total="searchResult.totalCount"
+                     @current-change="handleCurrentChange" :current-page="currentPage">
       </el-pagination>
     </div>
 
@@ -120,16 +120,16 @@
   import orderTable from './orderTable.vue'
   import touristDialog from './touristDialog.vue'
   import refundDialog from './refundDialog.vue'
-  import {mapActions, mapState} from 'vuex'
+  import {searchOrder} from '../../http/api'
 
   let initStartTime = new Date(moment(new Date()).format('YYYY-MM-DD')).getTime()
   let initEndTime = initStartTime + 30 * 24 * 60 * 60 * 1000
   export default {
     data () {
       return {
+        pageSize: 10,
+        currentPage: 1,
         searchData: {
-          pageSize: 10,
-          currentPage: 1,
           checkStatus: 'all',
           isExpired: 'all',
           orderCreateDateStart: initStartTime,
@@ -179,16 +179,19 @@
         },
         totalCount: null,
         loading: true,
-        searching: false
+        searching: false,
+        searchResult: []
       }
     },
     computed: {
-      ...mapState(['searchResult'])
+      // ...mapState(['searchResult'])
     },
     created () {
-      this.search(this.searchData).then(() => {
+      searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
+        this.searchResult = data.orders
         this.loading = false
       })
+
       this.$bus.$off('refund')
     },
     mounted () {
@@ -197,21 +200,24 @@
       })
     },
     methods: {
-      ...mapActions(['search']),
       handleCurrentChange (val) {
-        this.searchData.currentPage = val
+        this.currentPage = val
         this.loading = true
-        this.search(this.searchData).then(() => {
+        searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
+          this.searchResult = data.orders
           this.loading = false
         })
       },
       formSearch () {
         this.searchData.currentPage = 1
+        this.loading = true
         this.searching = true
-        this.search(this.searchData).then(() => {
-          this.searching = false
+        searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
+          this.searchResult = data.orders
           let ele = this.$refs.searchTable
           this.$scrollTo(ele)
+          this.loading = false
+          this.searching = false
         })
       },
       changeOrderDate (val) {

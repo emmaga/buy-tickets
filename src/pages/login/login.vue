@@ -21,24 +21,25 @@
       </div>
       <div class="panel-body">
         <!--登录表单-->
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
+        <el-form :model="loginForm" :rules="rules" ref="loginForm" class="loginForm">
           <el-form-item prop="account">
-            <el-input v-model="ruleForm.account" name="account" auto-complete="on" placeholder="用户名">
+            <el-input v-model="loginForm.account" name="account" auto-complete="on" placeholder="用户名">
               <i class="glyphicon glyphicon-user" slot="prepend"></i>
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input type="password" v-model="ruleForm.password" name="password" placeholder="密码">
+            <el-input type="password" v-model="loginForm.password" name="password" placeholder="密码">
               <i class="glyphicon glyphicon-lock" slot="prepend"></i>
             </el-input>
           </el-form-item>
           <el-form-item prop="OTACode">
-            <el-input v-model="ruleForm.OTACode" name="OTACode" auto-complete="on"  placeholder="分销商code">
+            <el-input v-model="loginForm.OTACode" name="OTACode" auto-complete="on" placeholder="分销商code">
               <i class="glyphicon glyphicon-briefcase" slot="prepend"></i>
             </el-input>
           </el-form-item>
           <div class="control-group btn-wrap">
-            <button :disabled="logining" @click.stop.prevent="submitForm('ruleForm')" class="btn btn-primary btn-block">
+            <button :disabled="logining" @click.stop.prevent="submitForm('loginForm')"
+                    class="btn btn-primary btn-block">
               登录
             </button>
           </div>
@@ -50,13 +51,13 @@
 
 <script>
   import md5 from 'js-md5'
-  import {mapActions} from 'vuex'
+  import {login} from '@/http/api'
   export default {
     name: 'login',
     data () {
       return {
         logining: false,
-        ruleForm: {
+        loginForm: {
           account: '',
           password: '',
           OTACode: ''
@@ -75,17 +76,12 @@
       }
     },
     methods: {
-      ...mapActions(['login']),
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.logining = true
-            let loginData = {
-              OTACode: this.ruleForm.OTACode,
-              account: this.ruleForm.account,
-              password: md5(this.ruleForm.password)
-            }
-            this.login(loginData).then(() => {
+            this.loginForm.password = md5(this.loginForm.password)
+            login(this.loginForm).then(() => {
               this.$message({
                 showClose: true,
                 message: '登录成功！',

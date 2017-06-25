@@ -9,7 +9,6 @@ const state = {
   userName: '',
   prePayment: 0,
   paymentAmount: 0,
-  productList: [],
   searchResult: {}
 }
 
