@@ -63,7 +63,7 @@
 
 
     <!--重置密码-->
-    <el-dialog :visible.sync="resetPassVisible" title="新增用户" size="tiny">
+    <el-dialog :visible.sync="resetPassVisible" title="重置密码" size="tiny">
       <el-form :model="passForm" :rules="rules3" ref="passForm" label-width="95px" label-position="left">
         <el-form-item label="新密码" prop="newPassword">
           <el-input type="password" v-model="passForm.newPassword" auto-complete="off"></el-input>
@@ -165,16 +165,22 @@
     methods: {
       showNewUser () {
         this.newUserVisible = true
-        this.resetForm('userForm')
+        this.$nextTick(() => {
+          this.resetForm('userForm')
+        })
       },
       showEidtUser (obj) {
         this.editUserVisible = true
         this.editForm = Object.assign({}, obj)
-        this.resetForm('editForm')
+        this.$nextTick(() => {
+          this.resetForm('editForm')
+        })
       },
       showResetUser (obj) {
         this.resetPassVisible = true
-        this.resetForm('passForm')
+        this.$nextTick(() => {
+          this.resetForm('passForm')
+        })
       },
       submitNewUserForm (formName) {
         this.$refs[formName].validate((valid) => {
