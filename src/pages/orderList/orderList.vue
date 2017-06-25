@@ -122,10 +122,10 @@
   import refundDialog from './refundDialog.vue'
   import {searchOrder} from '../../http/api'
 
-  let initStartTime = new Date(moment(new Date()).format('YYYY-MM-DD')).getTime()
-  let initEndTime = initStartTime + 30 * 24 * 60 * 60 * 1000
   export default {
     data () {
+      let initStartTime = new Date(moment(new Date()).format('YYYY-MM-DD 00:00:00')).getTime()
+      let initEndTime = new Date(moment(initStartTime).add(30, 'days').format('YYYY-MM-DD 23:59:59')).getTime()
       return {
         pageSize: 10,
         currentPage: 1,
@@ -183,15 +183,11 @@
         searchResult: []
       }
     },
-    computed: {
-      // ...mapState(['searchResult'])
-    },
     created () {
       searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
         this.searchResult = data.orders
         this.loading = false
       })
-
       this.$bus.$off('refund')
     },
     mounted () {
@@ -230,24 +226,27 @@
           this.orderDateRange = [null, null]
         }
         this.searchData.orderCreateDateStart = this.formateTime(this.orderDateRange[0])
-        this.searchData.orderCreateDateEnd = this.formateTime(this.orderDateRange[1])
+        this.searchData.orderCreateDateEnd = this.formateEndTime(this.orderDateRange[1])
       },
       changeVisitDate (val) {
         if (val === undefined) {  // date清空后bug fix
           this.visitDateRange = [null, null]
         }
         this.searchData.visitDateStart = this.formateTime(this.visitDateRange[0])
-        this.searchData.visitDateEnd = this.formateTime(this.visitDateRange[1])
+        this.searchData.visitDateEnd = this.formateEndTime(this.visitDateRange[1])
       },
       changeCheckDate (val) {
         if (val === undefined) {  // date清空后bug fix
           this.checkDateRange = [null, null]
         }
         this.searchData.checkDateStart = this.formateTime(this.checkDateRange[0])
-        this.searchData.checkDateEnd = this.formateTime(this.checkDateRange[1])
+        this.searchData.checkDateEnd = this.formateEndTime(this.checkDateRange[1])
       },
       formateTime (val) {
         return val ? new Date(val).getTime() : ''
+      },
+      formateEndTime (val) {
+        return val ? new Date(moment(val).format('YYYY-MM-DD 23:59:59')).getTime() : ''
       }
     },
     components: {
