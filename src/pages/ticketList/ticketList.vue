@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import orderDialog from '../../components/dialog/orderDialog.vue'
+  import orderDialog from './orderDialog.vue'
   import {mapState, mapActions} from 'vuex'
 
   export default {

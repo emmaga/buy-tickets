@@ -118,8 +118,8 @@
 <script>
   import moment from 'moment'
   import orderTable from './orderTable.vue'
-  import touristDialog from '../../components/dialog/touristDialog.vue'
-  import refundDialog from '../../components/dialog/refundDialog.vue'
+  import touristDialog from './touristDialog.vue'
+  import refundDialog from './refundDialog.vue'
   import {mapActions, mapState} from 'vuex'
 
   let initStartTime = new Date(moment(new Date()).format('YYYY-MM-DD')).getTime()

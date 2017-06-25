@@ -49,7 +49,7 @@
 <script>
   import {clearLocal} from '@/common/js/store'
   import {mapMutations, mapState} from 'vuex'
-  import passwordDialog from '../../components/dialog/passwordDialog'
+  import passwordDialog from './passwordDialog'
   export default {
     data () {
       return {
@@ -100,7 +100,6 @@
       overflow: hidden;
     }
   }
-
   .a-btn {
     cursor: pointer;
   }

@@ -5,6 +5,7 @@ import home from '@/pages/home/home'
 import NotFound from '@/pages/404.vue'
 import orderList from '@/pages/orderList/orderList'
 import ticketList from '@/pages/ticketList/ticketList'
+import userList from '@/pages/userList/userList'
 import {getLocal} from '@/common/js/store'
 
 Vue.use(Router)
@@ -56,7 +57,7 @@ const routes = [
         path: 'userList',
         name: '用户管理',
         iconCls: '',
-        component: ticketList
+        component: userList
       }
     ]
   },
