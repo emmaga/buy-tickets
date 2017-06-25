@@ -196,7 +196,10 @@
     },
     mounted () {
       this.$bus.$on('refund', () => {
-        this.handleCurrentChange(this.currentPage)
+        searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
+          this.searchResult = data.orders
+          this.loading = false
+        })
       })
     },
     methods: {
@@ -205,11 +208,13 @@
         this.loading = true
         searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
           this.searchResult = data.orders
+          let ele = this.$refs.searchTable
+          this.$scrollTo(ele)
           this.loading = false
         })
       },
       formSearch () {
-        this.searchData.currentPage = 1
+        this.currentPage = 1
         this.loading = true
         this.searching = true
         searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
