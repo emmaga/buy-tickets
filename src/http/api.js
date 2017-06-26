@@ -59,3 +59,59 @@ export const searchOrder = (data, size, cur) => {
   }
   return axios.post('/otauser', params).then(res => res.data)
 }
+
+// 退票
+export const cancelOrder = (params) => {
+  params = Object.assign({action: 'OTACancelOrder'}, params)
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 游客列表
+export const getOrderUserList = (id) => {
+  let params = {
+    action: 'GetOrderUserList',
+    orderId: id
+  }
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 获取用户列表
+export const getAdminUserList = () => {
+  let params = {
+    action: 'GetAdminUserList'
+  }
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 添加用户
+export const addUser = (params) => {
+  params = Object.assign({
+    action: 'AddUser'
+  }, params)
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 更新用户
+export const updateUser = (params) => {
+  params = Object.assign({
+    action: 'UpdateUser'
+  }, params)
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 设置用户密码
+export const updateUserPassword = (params) => {
+  params = Object.assign({
+    action: 'UpdateUserPassword'
+  }, params)
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
+// 删除用户
+export const deleteUser = (id) => {
+  let params = {
+    action: 'DeleteUser',
+    UserID: id
+  }
+  return axios.post('/otauser', params).then(res => res.data)
+}

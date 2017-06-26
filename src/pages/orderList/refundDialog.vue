@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import {cancelOrder} from '../../http/api'
   export default {
     data () {
       return {
@@ -43,14 +44,13 @@
       refund () {
         this.$confirm('确定退票吗?').then(() => {
           this.refunding = true
-          this.axios.post('/otauser', {
-            action: 'OTACancelOrder',
+          let params = {
             orderId: this.orderId - 0,
             cancelSerial: new Date().getTime() + '' + Math.floor(Math.random(100) * 100),
             cancelCount: this.cancelCount
-          })
-            .then((response) => {
-              let data = response.data
+          }
+          cancelOrder(params)
+            .then((data) => {
               if (data.rescode === 200) {
                 this.$message({
                   type: 'success',
@@ -65,7 +65,8 @@
               console.log(error)
               this.refunding = false
             })
-        }).catch(() => {})
+        }).catch(() => {
+        })
       }
     }
   }

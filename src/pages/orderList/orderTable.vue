@@ -10,7 +10,7 @@
             <span>{{ props.row.price }}</span>
           </el-form-item>
           <el-form-item label="已检">
-            <span>{{ props.row.checkedTickets | isNot}}</span>
+            <span>{{ props.row.checkedTickets}}</span>
           </el-form-item>
           <el-form-item label="已退">
             <span>{{ props.row.returnedTickets}}</span>

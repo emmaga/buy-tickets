@@ -27,37 +27,30 @@
 </template>
 
 <script>
+  import {getOrderUserList} from '../../http/api'
   export default {
     data () {
       return {
         tourists: [],
         dialogVisible: false,
-        orderId: 0
+        orderId: ''
       }
     },
     created () {
       this.$bus.$on('showTouristDialog', data => {
-        this.orderId = data.orderId
-        this.getTouristList()
-      })
-    },
-    methods: {
-      getTouristList () {
         this.tourists = []
         this.dialogVisible = true
-        this.axios.post('/otauser', {
-          action: 'GetOrderUserList',
-          orderId: this.orderId + ''
-        })
-          .then((response) => {
-            let data = response.data
+        this.orderId = data.orderId + ''
+        getOrderUserList(this.orderId)
+          .then((data) => {
             this.tourists = data.users.lists
           })
           .catch(function (error) {
             console.log(error)
           })
-      }
-    }
+      })
+    },
+    methods: {}
   }
 </script>
 
