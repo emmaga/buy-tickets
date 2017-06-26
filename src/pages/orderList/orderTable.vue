@@ -65,14 +65,9 @@
       </template>
     </el-table-column>
 
-    <el-table-column label="游客">
+    <el-table-column label="操作" width="140">
       <template scope="scope">
         <el-button @click="showTourist(scope.row)" type="primary" size="small">游客</el-button>
-      </template>
-    </el-table-column>
-
-    <el-table-column label="退票">
-      <template scope="scope">
         <el-button @click="showRefund(scope.row)" type="danger" size="small"
                    :disabled="(scope.row.totalTickets - scope.row.checkedTickets) === 0 || scope.row.checkStatus === 'refund'">
           退票

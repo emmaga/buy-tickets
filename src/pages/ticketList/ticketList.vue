@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <button @click="initOrder(scope.row)" class="btn btn-sm btn-primary">下单</button>
+          <el-button @click="initOrder(scope.row)" type="primary" size="small">下单</el-button>
         </template>
       </el-table-column>
     </el-table>

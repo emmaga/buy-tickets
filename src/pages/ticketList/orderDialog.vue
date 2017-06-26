@@ -67,8 +67,8 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer">
-      <button @click="dialogFormVisible = false" class="btn btn-default btn-sm">取 消</button>
-      <button :disabled="disabled" @click.stop.prevent="submitForm('form')" class="btn btn-primary btn-sm">下单</button>
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button :disabled="disabled" @click.stop.prevent="submitForm('form')" type="primary">下单</el-button>
     </div>
 
   </el-dialog>
