@@ -100,9 +100,9 @@ export const updateUser = (params) => {
 }
 
 // 设置用户密码
-export const updateUserPassword = (params) => {
+export const resetUserPassword = (params) => {
   params = Object.assign({
-    action: 'UpdateUserPassword'
+    action: 'ResetUserPassword'
   }, params)
   return axios.post('/otauser', params).then(res => res.data)
 }
