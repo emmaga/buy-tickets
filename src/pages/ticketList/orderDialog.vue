@@ -156,15 +156,15 @@
         },
         rules: {
           contactsName: [
-            {required: true, message: '请输入姓名', trigger: 'blur'}
+            {required: true, message: '请输入姓名', trigger: 'blur,change'}
           ],
           contactsMobile: [
-            {required: true, message: '请输入手机', trigger: 'blur'},
-            {validator: validateMobile, trigger: 'blur'}
+            {required: true, message: '请输入手机', trigger: 'blur,change'},
+            {validator: validateMobile, trigger: 'blur,change'}
           ],
           contactsIdNum: [
-            {required: true, message: '请输入证件号', trigger: 'blur'},
-            {validator: validateId, trigger: 'blur'}
+            {required: true, message: '请输入证件号', trigger: 'blur,change'},
+            {validator: validateId, trigger: 'blur,change'}
           ]
         }
       }

@@ -64,13 +64,13 @@
         },
         rules: {
           account: [
-            {required: true, message: '请输入账号', trigger: 'blur'}
+            {required: true, message: '请输入账号', trigger: 'blur,change'}
           ],
           password: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
+            {required: true, message: '请输入密码', trigger: 'blur,change'}
           ],
           OTACode: [
-            {required: true, message: '请输入分销商code', trigger: 'blur'}
+            {required: true, message: '请输入分销商code', trigger: 'blur,change'}
           ]
         }
       }
@@ -88,6 +88,8 @@
                 type: 'success'
               })
               this.$router.push('home/ticketList')
+              this.logining = false
+            }).catch(() => {
               this.logining = false
             })
           } else {
