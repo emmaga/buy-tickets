@@ -9,7 +9,7 @@
     </div>
     <div class="box">
       <h1>404</h1>
-      <h4>您访问的页面走丢了...</h4><a @click="go">返回首页>></a>
+      <h4>您访问的页面走丢了...</h4><router-link to="home/ticketList">返回首页>></router-link>
     </div>
   </div>
 </template>
@@ -20,9 +20,6 @@
       return {}
     },
     methods: {
-      go () {
-        this.$router.push('/home/ticketList')
-      }
     }
   }
 </script>
