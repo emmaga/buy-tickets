@@ -146,36 +146,36 @@
         },
         rules: {
           username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'}
+            {required: true, message: '请输入用户名', trigger: 'blur,change'}
           ],
           userLoginName: [
-            {required: true, message: '请输入登录账号', trigger: 'blur'}
+            {required: true, message: '请输入登录账号', trigger: 'blur,change'}
           ],
           newPassword: [
-            {required: true, message: '请输入新密码', trigger: 'blur'},
-            {validator: validatePass, trigger: 'blur'}
+            {required: true, message: '请输入新密码', trigger: 'blur,change'},
+            {validator: validatePass, trigger: 'blur,change'}
           ],
           confirmPassword: [
-            {required: true, message: '请输入确认新原密码', trigger: 'blur'},
-            {validator: validatePass2, trigger: 'blur'}
+            {required: true, message: '请输入确认新原密码', trigger: 'blur,change'},
+            {validator: validatePass2, trigger: 'blur,change'}
           ]
         },
         rules2: {
           UserName: [
-            {required: true, message: '请输入用户名', trigger: 'blur'}
+            {required: true, message: '请输入用户名', trigger: 'blur,change'}
           ],
           UserLoginName: [
-            {required: true, message: '请输入登录账号', trigger: 'blur'}
+            {required: true, message: '请输入登录账号', trigger: 'blur,change'}
           ]
         },
         rules3: {
           newPassword: [
-            {required: true, message: '请输入新密码', trigger: 'blur'},
-            {validator: validatePass3, trigger: 'blur'}
+            {required: true, message: '请输入新密码', trigger: 'blur,change'},
+            {validator: validatePass3, trigger: 'blur,change'}
           ],
           confirmPassword: [
-            {required: true, message: '请输入确认新原密码', trigger: 'blur'},
-            {validator: validatePass4, trigger: 'blur'}
+            {required: true, message: '请输入确认新原密码', trigger: 'blur,change'},
+            {validator: validatePass4, trigger: 'blur,change'}
           ]
         }
       }

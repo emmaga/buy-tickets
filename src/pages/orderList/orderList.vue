@@ -187,6 +187,7 @@
       searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
         this.searchResult = data.orders
         this.loading = false
+        console.log('created')
       })
       this.$bus.$off('refund')
     },
@@ -204,8 +205,8 @@
         this.loading = true
         searchOrder(this.searchData, this.pageSize, this.currentPage).then((data) => {
           this.searchResult = data.orders
-          let ele = this.$refs.searchTable
-          this.$scrollTo(ele)
+//          let ele = this.$refs.searchTable
+//          this.$scrollTo(ele)
           this.loading = false
         })
       },

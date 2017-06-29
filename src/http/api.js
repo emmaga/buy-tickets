@@ -19,6 +19,12 @@ export const login = params => {
   })
 }
 
+// 修改用户密码
+export const resetOTAUserPassword = params => {
+  params = Object.assign({action: 'ResetOTAUserPassword'}, params)
+  return axios.post('/otauser', params).then(res => res.data)
+}
+
 // 获取账户信息
 export const getAccountInfo = params => {
   params = {
@@ -99,7 +105,7 @@ export const updateUser = (params) => {
   return axios.post('/otauser', params).then(res => res.data)
 }
 
-// 设置用户密码
+// 管理员设置用户密码
 export const resetUserPassword = (params) => {
   params = Object.assign({
     action: 'ResetUserPassword'

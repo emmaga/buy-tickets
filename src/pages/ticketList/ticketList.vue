@@ -43,7 +43,7 @@
 
 <script>
   import orderDialog from './orderDialog.vue'
-  import {getProductList} from '@/http/api'
+  import {getProductList} from '../../http/api'
   import {mapState, mapActions} from 'vuex'
 
   export default {

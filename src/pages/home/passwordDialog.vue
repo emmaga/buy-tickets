@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import {resetOTAUserPassword} from '../../http/api'
   import md5 from 'js-md5'
   export default {
     data () {
@@ -47,15 +48,15 @@
         },
         rules: {
           oldPassword: [
-            {required: true, message: '请输入原密码', trigger: 'blur'}
+            {required: true, message: '请输入原密码', trigger: 'blur,change'}
           ],
           newPassword: [
-            {required: true, message: '请输入新密码', trigger: 'blur'},
-            {validator: validatePass, trigger: 'blur'}
+            {required: true, message: '请输入新密码', trigger: 'blur,change'},
+            {validator: validatePass, trigger: 'blur,change'}
           ],
           confirmPassword: [
-            {required: true, message: '请输入确认新原密码', trigger: 'blur'},
-            {validator: validatePass2, trigger: 'blur'}
+            {required: true, message: '请输入确认新原密码', trigger: 'blur,change'},
+            {validator: validatePass2, trigger: 'blur,change'}
           ]
         }
       }
@@ -68,34 +69,36 @@
         })
       })
     },
+    computed: {
+      passwordData: function () {
+        return {
+          oldPassword: md5(this.passwordForm.oldPassword),
+          confirmPassword: md5(this.passwordForm.confirmPassword),
+          newPassword: md5(this.passwordForm.newPassword)
+        }
+      }
+    },
     methods: {
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.changing = true
-            this.axios.post('/otauser', {
-              action: 'ResetOTAUserPassword',
-              oldPassword: md5(this.passwordForm.oldPassword),
-              confirmPassword: md5(this.passwordForm.confirmPassword),
-              newPassword: md5(this.passwordForm.newPassword)
+            resetOTAUserPassword(this.passwordData).then(data => {
+              if (data.rescode === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '密码修改成功!'
+                })
+                this.dialogVisible = false
+              }
+              this.changing = false
+            }).catch((error) => {
+              console.log(error)
+              this.changing = false
             })
-              .then((response) => {
-                let data = response.data
-                if (data.rescode === 200) {
-                  this.$message({
-                    type: 'success',
-                    message: '密码修改成功!'
-                  })
-                  this.dialogVisible = false
-                }
-                this.changing = false
-              })
-              .catch((error) => {
-                console.log(error)
-                this.changing = false
-              })
           } else {
             console.log('error submit!!')
+            this.changing = false
             return false
           }
         })
