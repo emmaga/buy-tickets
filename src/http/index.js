@@ -24,8 +24,9 @@ axios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
+  let statusCode = response.data.rescode ? response.data.rescode : response.data.status
   // 对响应数据做些事
-  if (response.data.rescode === 401) {
+  if (statusCode === 401) {
     ElementUI.Message({
       showClose: true,
       message: response.data.errInfo,
@@ -34,7 +35,7 @@ axios.interceptors.response.use(function (response) {
     clearLocal('clearToken')
     store.commit('delUserName')
     router.push('/login')
-  } else if (response.data.rescode !== 200) {
+  } else if (statusCode !== 200) {
     ElementUI.Message({
       showClose: true,
       message: response.data.errInfo,

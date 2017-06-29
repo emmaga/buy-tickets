@@ -90,6 +90,18 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+  // 用户管理
+  if (to.matched.some(r => r.path.indexOf('user') !== -1)) {
+    if (getLocal('account') !== 'admin') {
+      alert('您无权访问')
+      next({
+        path: '/home/orderList'
+      })
+    } else {
+      next()
+    }
+  }
 })
 
 export default router

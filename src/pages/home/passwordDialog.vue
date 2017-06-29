@@ -8,7 +8,7 @@
         <el-form-item label="新密码" prop="newPassword">
           <el-input type="password" v-model="passwordForm.newPassword" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认新密码" prop="confirmPassword">
+        <el-form-item label="确认密码" prop="confirmPassword">
           <el-input type="password" v-model="passwordForm.confirmPassword" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -83,14 +83,12 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.changing = true
-            resetOTAUserPassword(this.passwordData).then(data => {
-              if (data.rescode === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '密码修改成功!'
-                })
-                this.dialogVisible = false
-              }
+            resetOTAUserPassword(this.passwordData).then(() => {
+              this.$message({
+                type: 'success',
+                message: '密码修改成功!'
+              })
+              this.dialogVisible = false
               this.changing = false
             }).catch((error) => {
               console.log(error)

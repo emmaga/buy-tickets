@@ -90,6 +90,7 @@
               this.$router.push('home/ticketList')
               this.logining = false
             }).catch(() => {
+              this.loginForm.password = ''
               this.logining = false
             })
           } else {

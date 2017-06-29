@@ -208,7 +208,7 @@
             this.form.travelerList.push({
               name: '',
               mobile: '',
-              idType: 'ID_CARD',
+              idType: '',
               idNum: ''
             })
           }
@@ -227,18 +227,16 @@
           if (valid) {
             this.disabled = true
             placeOrder(this.placeData)
-              .then((data) => {
+              .then(() => {
                 this.disabled = false
-                if (data.rescode === 200) {
-                  this.getAccount().then(() => {
-                    this.$message({
-                      showClose: true,
-                      message: '下单成功！',
-                      type: 'success'
-                    })
-                    this.dialogFormVisible = false
+                this.getAccount().then(() => {
+                  this.$message({
+                    showClose: true,
+                    message: '下单成功！',
+                    type: 'success'
                   })
-                }
+                  this.dialogFormVisible = false
+                })
               })
               .catch((error) => {
                 console.log(error)

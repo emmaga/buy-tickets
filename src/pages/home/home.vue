@@ -21,7 +21,7 @@
           <el-menu-item index="ticketList">手动下单</el-menu-item>
           <el-menu-item index="orderList">订单查询</el-menu-item>
         </el-submenu>
-        <el-submenu index="2">
+        <el-submenu index="2" v-if="userName=='admin'">
           <template slot="title"><i class="glyphicon glyphicon-wrench"></i> 管理员工具</template>
           <el-menu-item index="userList">用户管理</el-menu-item>
         </el-submenu>

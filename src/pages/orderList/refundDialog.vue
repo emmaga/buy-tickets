@@ -50,15 +50,13 @@
             cancelCount: this.cancelCount
           }
           cancelOrder(params)
-            .then((data) => {
-              if (data.rescode === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '退票成功!'
-                })
-                this.dialogVisible = false
-                this.$bus.$emit('refund')
-              }
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '退票成功!'
+              })
+              this.dialogVisible = false
+              this.$bus.$emit('refund')
               this.refunding = false
             })
             .catch((error) => {

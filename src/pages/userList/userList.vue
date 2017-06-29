@@ -1,5 +1,5 @@
 <template>
-  <div><!--工具条-->
+  <div class="user-list"><!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
@@ -14,10 +14,8 @@
       </el-form>
     </el-col>
 
-    <el-table :data="filterData" style="width: 100%;">
-      <el-table-column type="selection" width="55">
-      </el-table-column>
-      <el-table-column prop="UserID" label="ID">
+    <el-table :data="filterData" style="width: 100%;" stripe>
+      <el-table-column prop="UserID" label="ID" width="60">
       </el-table-column>
       <el-table-column prop="UserLoginName" label="登录账号">
       </el-table-column>
@@ -25,9 +23,11 @@
       </el-table-column>
       <el-table-column label="操作" width="220">
         <template scope="scope">
-          <el-button type="" size="small" @click="showEidtUser(scope.row)">编辑</el-button>
-          <el-button type="" size="small" @click="showResetUser(scope.row)">重置密码</el-button>
-          <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
+          <template v-if="!(scope.row.UserName=='admin')">
+            <el-button type="" size="small" @click="showEidtUser(scope.row)">编辑</el-button>
+            <el-button type="" size="small" @click="showResetUser(scope.row)">重置密码</el-button>
+            <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -35,9 +35,6 @@
     <!--新增用户-->
     <el-dialog :visible.sync="newUserVisible" title="新增用户" size="tiny">
       <el-form :model="userForm" :rules="rules" ref="userForm" label-width="95px" label-position="left">
-        <el-form-item label="登录账号" prop="userLoginName">
-          <el-input v-model="userForm.userLoginName" auto-complete="off"></el-input>
-        </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="userForm.username" auto-complete="off"></el-input>
         </el-form-item>
@@ -57,9 +54,6 @@
     <!--编辑用户-->
     <el-dialog :visible.sync="editUserVisible" title="修改用户" size="tiny">
       <el-form :model="editForm" :rules="rules2" ref="editForm" label-width="95px" label-position="left">
-        <el-form-item label="登录账号" prop="UserLoginName">
-          <el-input v-model="editForm.UserLoginName" auto-complete="off"></el-input>
-        </el-form-item>
         <el-form-item label="用户名" prop="UserName">
           <el-input v-model="editForm.UserName" auto-complete="off"></el-input>
         </el-form-item>
@@ -88,7 +82,7 @@
 
 <script>
   import {getAdminUserList, addUser, resetUserPassword, updateUser, deleteUser} from '../../http/api'
-  import {Users} from '@/mock/data/user'
+  //  import {Users} from '@/mock/data/user'
   import md5 from 'js-md5'
 
   export default {
@@ -127,7 +121,7 @@
         newUserVisible: false,
         editUserVisible: false,
         resetPassVisible: false,
-        user: Users,
+        user: [],
         userForm: {
           username: '',
           userLoginName: '',
@@ -148,9 +142,6 @@
           username: [
             {required: true, message: '请输入用户名', trigger: 'blur,change'}
           ],
-          userLoginName: [
-            {required: true, message: '请输入登录账号', trigger: 'blur,change'}
-          ],
           newPassword: [
             {required: true, message: '请输入新密码', trigger: 'blur,change'},
             {validator: validatePass, trigger: 'blur,change'}
@@ -163,9 +154,6 @@
         rules2: {
           UserName: [
             {required: true, message: '请输入用户名', trigger: 'blur,change'}
-          ],
-          UserLoginName: [
-            {required: true, message: '请输入登录账号', trigger: 'blur,change'}
           ]
         },
         rules3: {
@@ -182,7 +170,7 @@
     },
     created () {
       getAdminUserList().then(data => {
-        console.log(data)
+        this.user = data.users.lists
       })
     },
     computed: {
@@ -207,6 +195,7 @@
       },
       showResetUser (obj) {
         this.resetPassVisible = true
+        this.passForm = Object.assign({}, obj)
         this.$nextTick(() => {
           this.resetForm('passForm')
         })
@@ -220,11 +209,16 @@
               Password: md5(this.userForm.newPassword)
             }
             addUser(params).then(data => {
-              console.log(data)
+              this.$message({
+                showClose: true,
+                message: '新增用户成功！',
+                type: 'success'
+              })
+              getAdminUserList().then(data => {
+                this.user = data.users.lists
+              })
+              this.newUserVisible = false
             })
-            // 测试
-            this.user.push({name: this.userForm.username})
-            this.newUserVisible = false
           } else {
             console.log('error submit!!')
             return false
@@ -240,18 +234,16 @@
               UserID: this.editForm.UserID
             }
             updateUser(params).then(() => {
+              this.$message({
+                showClose: true,
+                message: '修改成功！',
+                type: 'success'
+              })
+              getAdminUserList().then(data => {
+                this.user = data.users.lists
+              })
               this.editUserVisible = false
             })
-            // 测试
-            let para = Object.assign({}, this.editForm)
-            this.user.some(u => {
-              if (u.UserID === para.UserID) {
-                u.UserName = para.UserName
-                u.UserLoginName = para.UserLoginName
-                return true
-              }
-            })
-            this.editUserVisible = false
           } else {
             console.log('error submit!!')
             return false
@@ -262,11 +254,15 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-              resetAccount: this.passForm.userLoginName,
+              resetAccount: this.passForm.UserLoginName,
               resetpassword: md5(this.passForm.newPassword)
             }
             resetUserPassword(params).then(() => {
-              alert('更新成功')
+              this.$message({
+                showClose: true,
+                message: '密码更新成功！',
+                type: 'success'
+              })
             })
             this.resetPassVisible = false
           } else {
@@ -278,13 +274,19 @@
       resetForm (formName) {
         this.$refs[formName].resetFields()
       },
-      deleteUser (val) {
+      deleteUser (obj) {
         this.$confirm('确定删除吗?')
           .then(() => {
-            deleteUser().then(() => {
-              alert('删除成功')
+            deleteUser(obj.UserID).then(() => {
+              this.$message({
+                showClose: true,
+                message: '删除成功！',
+                type: 'success'
+              })
+              getAdminUserList().then(data => {
+                this.user = data.users.lists
+              })
             })
-            this.user = this.user.filter(u => u.UserID !== val.UserID)
           })
           .catch(() => {
           })
@@ -294,4 +296,7 @@
 </script>
 
 <style lang="css" scoped>
+  .user-list{
+    padding-bottom: 50px;
+  }
 </style>
