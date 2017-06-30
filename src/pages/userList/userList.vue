@@ -17,7 +17,7 @@
     <el-table :data="filterData" style="width: 100%;" stripe>
       <el-table-column prop="UserID" label="ID" width="60">
       </el-table-column>
-      <el-table-column prop="UserLoginName" label="登录账号">
+      <el-table-column prop="UserLoginName" label="登录账号" width="120">
       </el-table-column>
       <el-table-column prop="UserName" label="用户名">
       </el-table-column>

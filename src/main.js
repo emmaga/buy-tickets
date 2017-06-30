@@ -11,7 +11,6 @@ import store from '@/store'
 import VueBus from 'vue-bus'
 import filters from '@/common/js/filters/index'
 import VueScrollTo from 'vue-scrollto'
-import vuescroll from 'vue-scroll'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -29,8 +28,6 @@ window.requestAnimationFrame = (function () {
 Vue.use(VueScrollTo, {
   container: '.col-right'
 })
-
-Vue.use(vuescroll)
 
 /* eslint-disable no-new */
 new Vue({
