@@ -1,4 +1,4 @@
-# buy_tickets_el
+# buy-tickets
 
 > A Vue.js project
 
@@ -55,11 +55,11 @@
 
 克隆远程库
 ```
-git clone https://github.com/raythunder/buy_tickets_el.git
+git clone https://github.com/emmaga/buy-tickets.git
 ```
 进入项目目录
 ```
-cd buy_tickets_el
+cd buy-tickets
 ```
 安装依赖
 ```
