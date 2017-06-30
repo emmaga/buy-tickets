@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main not-found">
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -8,8 +8,12 @@
       </div>
     </div>
     <div class="box">
-      <h1>404</h1>
-      <h4>您访问的页面走丢了...</h4><router-link to="home/ticketList">返回首页>></router-link>
+      <div class="title">
+        <h1>404</h1>
+        <h4>您访问的页面走丢了...</h4>
+        <router-link to="home/ticketList">返回首页>></router-link>
+      </div>
+      <img src="../common/img/404.jpg" alt="">
     </div>
   </div>
 </template>
@@ -19,8 +23,7 @@
     data () {
       return {}
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 
@@ -28,15 +31,19 @@
   .box {
     width: 600px;
     margin: 0 auto;
-    height: 550px;
-    background: url("../common/img/404.jpg") right bottom no-repeat;
-    padding: 50px;
+    position: relative;
+    padding-top:100px;
     h1 {
       color: #bcc1cc
     }
+    .title {
+      position: absolute;
+      left: 50px;
+      top: 50px;
+    }
   }
 
-  a {
+  .box a {
     font-size: 14px;
     cursor: pointer;
   }
