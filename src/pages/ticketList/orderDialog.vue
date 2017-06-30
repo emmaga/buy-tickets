@@ -1,6 +1,7 @@
 <template>
   <!--弹出-->
   <el-dialog :visible.sync="dialogFormVisible" title="下单">
+    <button @click="filterTourist">下单咯</button>
     <el-form ref="form" :rules="rules" :model="form" label-width="120px">
       <div class="row">
         <div class="col-xs-12">
@@ -200,6 +201,19 @@
           this.$refs.form.resetFields('contactsIdNum')
         })
       },
+      filterTourist () {
+        this.form.travelerList = this.form.travelerList.filter((item) => {
+          let flag = false
+          for (let key in item) {
+            if (key !== 'idType') {
+              if (item.hasOwnProperty(key)) {
+                if (item[key]) flag = true
+              }
+            }
+          }
+          return flag
+        })
+      },
       handleChange (val) {
         let addNum
         if (val > this.form.travelerList.length) {
@@ -208,7 +222,7 @@
             this.form.travelerList.push({
               name: '',
               mobile: '',
-              idType: '',
+              idType: 'ID_CARD',
               idNum: ''
             })
           }
@@ -226,6 +240,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.disabled = true
+            this.filterTourist()
             placeOrder(this.placeData)
               .then(() => {
                 this.disabled = false

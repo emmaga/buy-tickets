@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog :visible.sync="dialogVisible" title="游客">
-
+      <div v-show="tourists.length==0" class="text-muted">暂无同游人信息</div>
       <el-form :inline="true" class="box-inline" v-for="(item, index) in tourists" :key="index">
         <h5>游客{{ index + 1 }}</h5>
         <el-form-item label="姓名">
