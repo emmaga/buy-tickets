@@ -9,7 +9,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand">清鹤购票平台</a>
+          <a class="navbar-brand">西塘清云购票平台</a>
         </div>
       </div>
     </div>
