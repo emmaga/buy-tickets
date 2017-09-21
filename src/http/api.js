@@ -43,6 +43,17 @@ export const getProductList = params => {
   }
   return axios.post('/otauser', params).then(res => res.data)
 }
+// 获取商品详情
+export const getProductDetail = (saleId) => {
+  let params = {
+    action: 'GetDetail',
+    account: getLocal('account'),
+    token: getLocal('clearToken'),
+    projectName: getLocal('projectName'),
+    saleId: saleId
+  }
+  return axios.post('/sale', params).then(res => res.data)
+}
 
 // 下单
 export const placeOrder = data => {
