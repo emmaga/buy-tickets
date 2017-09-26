@@ -29,7 +29,7 @@ axios.interceptors.response.use(function (response) {
   if (statusCode === 401) {
     ElementUI.Message({
       showClose: true,
-      message: response.data.errInfo,
+      message: response.data.msg,
       type: 'error'
     })
     clearLocal('clearToken')
@@ -38,7 +38,7 @@ axios.interceptors.response.use(function (response) {
   } else if (statusCode !== 200) {
     ElementUI.Message({
       showClose: true,
-      message: response.data.errInfo,
+      message: response.data.msg,
       type: 'error'
     })
   } else {

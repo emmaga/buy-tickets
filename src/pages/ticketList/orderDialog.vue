@@ -120,7 +120,6 @@
       <el-button @click="dialogFormVisible = false">取 消</el-button>
       <el-button :disabled="disabled || outOfTime" @click.stop.prevent="submitForm('form')" type="primary">下单</el-button>
     </div>
-
   </el-dialog>
 </template>
 
@@ -407,21 +406,21 @@
             this.disabled = true
             this.filterTourist()
             placeOrder(this.placeData)
-              .then(() => {
-                this.disabled = false
-                this.getAccount().then(() => {
-                  this.$message({
-                    showClose: true,
-                    message: '下单成功！',
-                    type: 'success'
-                  })
-                  this.dialogFormVisible = false
+            .then((res) => {
+              this.disabled = false
+              this.getAccount().then(() => {
+                this.$message({
+                  showClose: true,
+                  message: '下单成功！',
+                  type: 'success'
                 })
+                this.dialogFormVisible = false
               })
-              .catch((error) => {
-                console.log(error)
-                this.disabled = false
-              })
+            })
+            .catch((error) => {
+              console.log(error)
+              this.disabled = false
+            })
           } else {
             console.log('error submit!!')
             return false

@@ -56,14 +56,13 @@ export const getProductDetail = (saleId) => {
 }
 
 // 下单
-export const placeOrder = data => {
+export const placeOrder = (data) => {
   let params = {
     action: 'OTANewOrder',
     data: data
   }
   return axios.post('/otauser', params).then(res => res.data)
 }
-
 // 搜索
 export const searchOrder = (data, size, cur) => {
   let params = {
